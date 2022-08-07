@@ -69,14 +69,13 @@ public class Main {
     private static void fromZip(Path path) {
         try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(path + zipName))) {
             ZipEntry zipEntry;
-            byte[] buffer = new byte[2048];
             while ((zipEntry = zipInputStream.getNextEntry()) != null) {
                 Path pathFromZIP = gameDirectoryPath.resolve(zipEntry.getName());
                 try (BufferedOutputStream bufferedOutputStream =
-                             new BufferedOutputStream(new FileOutputStream(pathFromZIP.toString()), buffer.length)) {
-                    int length;
-                    while ((length = zipInputStream.read()) > 0) {
-                        bufferedOutputStream.write(buffer, 0, length);
+                             new BufferedOutputStream(new FileOutputStream(pathFromZIP.toString()))) {
+                    int data;
+                    while ((data = zipInputStream.read()) != -1) {
+                        bufferedOutputStream.write(data);
                     }
                 }
             }
